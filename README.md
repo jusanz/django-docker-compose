@@ -1,37 +1,36 @@
-## Docker Compose
+## Database
+
+Using **Postgis**, so we can use geometric data fully.
+
+## Static Files
+
+Using **Nginx** to serve static files
+
+## App
+
+Using **Daphne** to serve Django App
+
+
+## Usage
 
 `docker compose up -d`
 
-## Docker
-
-### Build Image
-
-`docker build -f./Dockerfile . -t remix/huwd`
-
-### Run Image
-
-`docker run -p 3000:3000 -d remix/huwd`
-
-### View Running Containers
-
-`docker ps`
-
-### View Log
-
-`docker logs <container-id>`
-
-### Go inside the container
-
-`docker exec -it <container-id> /bin/sh`
-
-## Install
+### check container id and enter the container
 
 ```
 docker container list
-docker exec -it <container-id. /bin/sh
+docker exec -it <container-id> /bin/sh
 ```
+
+### create superuser
 
 ```
 python manage.py migrate
 python manage.py createsuperuser
+```
+
+### migrate
+
+```
+python manage.py migrate
 ```
