@@ -1,0 +1,42 @@
+services:
+  db:
+    platform: linux/amd64
+    image: postgis/postgis:15-3.3-alpine
+    volumes:
+      - ./postgres/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  redis:
+    image: "redis:latest"
+    volumes:
+      - ./redis:/data
+  django:
+    build: django
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./public:/public
+    environment:
+      - SECRET_KEY=some_secret_key
+      - DEBUG=False
+      - STATIC_HOST=localhost:8080
+      - STATIC_PROTOCOL=http
+      - DJANGO_HOST=localhost
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - db
+      - redis
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+      - ./public:/public
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_HOST=_
+      - NGINX_PORT=80
